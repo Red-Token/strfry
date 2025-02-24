@@ -15,7 +15,7 @@ FROM ubuntu:noble AS runner
 WORKDIR /app
 
 RUN apt update && apt install -y --no-install-recommends \
-    liblmdb-dev libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd-dev &&
+    liblmdb-dev libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd-dev && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
