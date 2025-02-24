@@ -1,52 +1,25 @@
-# Built by Akito
-# npub1wprtv89px7z2ut04vvquscpmyfuzvcxttwy2csvla5lvwyj807qqz5aqle
-
-FROM alpine:3.18.3 AS build
-
+FROM ubuntu:noble AS build
 ENV TZ=Europe/London
-
 WORKDIR /build
+RUN apt update && apt install -y --no-install-recommends git g++ make pkg-config libtool ca-certificates \
+    libssl-dev zlib1g-dev liblmdb-dev libflatbuffers-dev \
+    libsecp256k1-dev libzstd-dev 
 
 COPY . .
+RUN git submodule update --init
+RUN make setup-golpe
+RUN make clean
+RUN make -j4
 
-RUN \
-  apk --no-cache add \
-    linux-headers \
-    git \
-    g++ \
-    make \
-    perl \
-    pkgconfig \
-    libtool \
-    ca-certificates \
-    libressl-dev \
-    zlib-dev \
-    lmdb-dev \
-    flatbuffers-dev \
-    libsecp256k1-dev \
-    zstd-dev \
-  && rm -rf /var/cache/apk/* \
-  && git submodule update --init \
-  && make setup-golpe \
-  && make -j4
-
-FROM alpine:3.18.3
-
+FROM ubuntu:noble AS runner
 WORKDIR /app
 
-RUN \
-  apk --no-cache add \
-    lmdb \
-    flatbuffers \
-    libsecp256k1 \
-    libb2 \
-    zstd \
-    libressl \
-  && rm -rf /var/cache/apk/*
+RUN apt update && apt install -y --no-install-recommends \
+    liblmdb-dev libflatbuffers-dev libsecp256k1-dev libb2-1 libzstd-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
 
-EXPOSE 7777
 
 ENTRYPOINT ["/app/strfry"]
 CMD ["relay"]
