@@ -1,7 +1,7 @@
 services:
   strfry-nostr-relay:
     image: strfry-nostr-relay
-    #build: .
+    build: .
     volumes:
       - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db:/app/strfry-db
