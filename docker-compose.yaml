@@ -1,10 +1,21 @@
 services:
   strfry-nostr-relay:
     image: strfry-nostr-relay
+    container_name: nostr-relay
     build: .
     volumes:
       - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db:/app/strfry-db
     ports:
       - "7777:7777"
+    restart: unless-stopped
+  strfry-nostr-community-relay:
+    image: strfry-nostr-relay
+    container_name: community-relay
+    build: .
+    volumes:
+      - ./strfry.conf:/etc/strfry.conf
+      - ./strfry-db-community:/app/strfry-db
+    ports:
+      - "7778:7777"
     restart: unless-stopped
