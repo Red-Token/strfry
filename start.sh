@@ -12,10 +12,10 @@ if ! command -v docker &>/dev/null; then
     answer=${answer:-n}
     case "$answer" in
     y | Y)
-        echo "Continue run script..."
+        echo "Installing Docker..."
         bash <(curl -sSL https://get.docker.com)
         ;;
-    N | N)
+    n | N)
         echo "Exit."
         exit 0
         ;;
@@ -24,13 +24,10 @@ if ! command -v docker &>/dev/null; then
         exit 1
         ;;
     esac
-
 fi
 
-echo "Starting build..."
+echo "Starting deployment..."
 
 docker compose down
 docker system prune -a -f
-
-docker compose -f docker-compose-build.yaml build --no-cache
 docker compose up -d

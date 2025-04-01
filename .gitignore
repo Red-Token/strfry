@@ -2,6 +2,7 @@
 *.d
 *.o
 /strfry
-/strfry-db/*.mdb
+*.mdb
+.keep
 .vscode/*
 /strfry-db-test/

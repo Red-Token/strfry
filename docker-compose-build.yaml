@@ -2,6 +2,7 @@ services:
   strfry-nostr-relay:
     image: ivnjey/strfry-nostr-relay
     container_name: nostr-relay
+    build: .
     volumes:
       - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db:/app/strfry-db
@@ -11,6 +12,7 @@ services:
   strfry-nostr-community-relay:
     image: ivnjey/strfry-nostr-relay
     container_name: community-relay
+    build: .
     volumes:
       - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db-community:/app/strfry-db
