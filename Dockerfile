@@ -9,7 +9,7 @@ COPY . .
 RUN git submodule update --init
 RUN make setup-golpe
 RUN make clean
-RUN make -j4
+RUN make -j6
 
 FROM ubuntu:noble AS runner
 WORKDIR /app
@@ -19,6 +19,7 @@ RUN apt update && apt install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /build/strfry strfry
+COPY ./strfry.conf /etc/strfry.conf
 
 ENTRYPOINT ["/app/strfry"]
 CMD ["relay"]

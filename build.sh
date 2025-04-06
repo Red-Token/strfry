@@ -27,10 +27,25 @@ if ! command -v docker &>/dev/null; then
 
 fi
 
-echo "Starting build..."
+PACKAGE_NAME=strfry-nostr-relay
 
-docker compose down
+if [ "$1" == "prod" ]; then
+    DOCKER_NAME=${DOCKERHUB_USERNAME}/$PACKAGE_NAME
+else
+    DOCKER_NAME=$PACKAGE_NAME
+fi
+
+export VERSION=1.0.4
+
+export DOCKER_NAME=$DOCKER_NAME
+
+echo "Starting build for version: ${VERSION}..."
+
+docker stop nostr-relay
+docker stop community-relay
+
+docker compose -f docker-compose-build.yaml down
 docker system prune -a -f
 
 docker compose -f docker-compose-build.yaml build --no-cache
-docker compose up -d
+docker compose -f docker-compose-build.yaml up -d

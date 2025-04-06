@@ -1,18 +1,20 @@
 services:
   strfry-nostr-relay:
-    image: ivnjey/strfry-nostr-relay
+    image: ivnjey/strfry-nostr-relay:latest
     container_name: nostr-relay
+    pull_policy: always
     volumes:
-      - ./strfry.conf:/etc/strfry.conf
+      # - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db:/app/strfry-db
     ports:
       - "7777:7777"
     restart: unless-stopped
   strfry-nostr-community-relay:
-    image: ivnjey/strfry-nostr-relay
+    image: ivnjey/strfry-nostr-relay:latest
     container_name: community-relay
+    pull_policy: always
     volumes:
-      - ./strfry.conf:/etc/strfry.conf
+      # - ./strfry.conf:/etc/strfry.conf
       - ./strfry-db-community:/app/strfry-db
     ports:
       - "7778:7777"

@@ -26,8 +26,13 @@ if ! command -v docker &>/dev/null; then
     esac
 fi
 
-echo "Starting deployment..."
+echo "Starting nostr-relay deployment..."
 
-docker compose down
+docker stop nostr-relay
+docker stop community-relay
+
+docker compose -f docker-compose-strfry.yaml down
 docker system prune -a -f
-docker compose up -d
+
+docker compose -f docker-compose-strfry.yaml up -d --force-recreate
+# docker compose up --pull always -d
